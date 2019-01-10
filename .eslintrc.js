@@ -21,9 +21,15 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'arrow-parens': 0,
     // allow async-await
-    'generator-star-spacing': 'off',
+    'generator-star-spacing': 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    // allow
+    "indent": ["error", 4],
+    "eqeqeq": "off", // 必须使用全等
+    "camelcase": "off"
+    // "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
   }
 }
