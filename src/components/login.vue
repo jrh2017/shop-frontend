@@ -11,13 +11,18 @@
                 </FormItem>
                 <FormItem class="form-footer">
                     <Button type="primary" @click="handleSubmit('loginData')">登录</Button>
-                    <Button type="ghost" @click="handleReset('loginData')" style="margin-left: 8px">重置</Button>
+                    <Button type="success" @click="handleSign('loginData')">注册</Button>
+                    <Button type="info" @click="handleReset('loginData')" style="margin-left: 8px">重置</Button>
                 </FormItem>
             </Form>
+        </div>
+        <div>
+            <router-view></router-view> 
         </div>
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data () {
         return {
@@ -37,18 +42,40 @@ export default {
             }
         }
     },
+    mounted () {
+        this.getUserList() // 获取服务器端用户数据
+        this.postUserList()// 传递参数给后端服务器
+    },
     methods: {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.$Message.success('提交成功!')
+                    this.$Message.success('登录成功!')
+                    this.$router.replace('/pages/home/home')//登录成功后跳转主页
                 } else {
-                    this.$Message.error('表单验证失败!')
+                    this.$Message.error('账号或密码错误!')
                 }
             })
         },
         handleReset (name) {
             this.$refs[name].resetFields()
+        },
+        postUserList () {
+            axios.post('http://47.110.78.180:3016/api/user/login', {
+                name: 'name',
+                password: '123456'
+            }).then(function (response) {
+                console.log(response)
+            }).catch(function (error) {
+                console.log(error)
+            })
+        },
+        getUserList () {
+            axios.get('http://47.110.78.180:3016/api/user?name=' + 'this.loginData.acct').then(res => {
+                console.log(res)
+            }).catch(function (error) {
+                console.log(error)
+            })
         }
     }
 }
@@ -93,6 +120,10 @@ body {
 
 .login .form-footer {
   text-align: right;
+}
+
+.ivu-btn {
+  margin-left: 11px;
 }
 
 .ivu-form-item-required .ivu-form-item-label:before {
