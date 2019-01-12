@@ -5,8 +5,6 @@ import App from './App'
 import router from './router'
 import iView from 'iview' // 引入iview依赖
 import 'iview/dist/styles/iview.css' // 引入iview css样式
-import login from './components/login'
-import home from './pages/home/home'
 
 Vue.config.productionTip = false
 Vue.use(iView)// 使用iview组件

@@ -16,9 +16,6 @@
                 </FormItem>
             </Form>
         </div>
-        <div>
-            <router-view></router-view> 
-        </div>
     </div>
 </template>
 <script>
@@ -44,14 +41,14 @@ export default {
     },
     mounted () {
         this.getUserList() // 获取服务器端用户数据
-        this.postUserList()// 传递参数给后端服务器
+        this.postUserList() // 传递参数给后端服务器
     },
     methods: {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$Message.success('登录成功!')
-                    this.$router.replace('/pages/home/home')//登录成功后跳转主页
+                    this.$router.push('/pages/home') // 登录成功后跳转主页
                 } else {
                     this.$Message.error('账号或密码错误!')
                 }
@@ -82,13 +79,6 @@ export default {
 
 </script>
 <style>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  background-color: #1c2438;
-}
-
 .login {
   width: 100%;
   height: 100%;

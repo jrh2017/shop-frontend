@@ -1,18 +1,22 @@
 <template>
     <div id="app">
-        <login></login>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-import login from './components/login'
 export default {
-    name: 'App',
-    components: {
-        login
-    }
+    name: 'App'
 }
 </script>
 
 <style>
+html, body{
+    height: 100%;
+    min-height: 100%;
+}
+body>div{
+    height: 100%;
+    min-height: 100%;
+}
 </style>
