@@ -29,7 +29,8 @@ module.exports = {
     // allow
     "indent": ["error", 4],
     "eqeqeq": "off", // 必须使用全等
-    "camelcase": "off"
+    "camelcase": "off",
     // "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
   }
 }

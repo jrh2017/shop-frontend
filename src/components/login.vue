@@ -59,10 +59,14 @@ export default {
         postUserList () {
             let _this = this
             axios.post('http://47.110.78.180:3016/api/user/login', this.loginData).then(function (response) {
-                _this.$router.push('/pages/home')
+                if (response.data.code == 1) {
+                    _this.$router.push('/pages/home')
+                } else {
+                    _this.$Message.error('账号或密码无效，登录失败！')
+                }
             }).catch(function (error) {
                 console.log(error)
-                _this.$Message.error('登录失败')
+                _this.$Message.error('账号或密码无效，登录失败！')
             })
         },
         getUserList () {
