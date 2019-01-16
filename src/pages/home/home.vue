@@ -1,128 +1,242 @@
 <template>
-    <div class="layout">
-        <Layout>
-            <Header>
-                <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo">
-                        <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1547475031&di=79b8be743cf50b29ea24d78b1a20b15a&src=http://pic3.16pic.com/00/55/43/16pic_5543165_b.jpg">
+    <div div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
+        <Row type="flex">
+            <!-- 左侧菜单 -->
+            <i-col :span="spanLeft" class="layout-menu-left">
+                <Menu :mode="modeType" theme="dark" width="auto" :active-name="this.$route.path" :open-names="openNames" @on-select="menuSelect" accordion>
+                    <div class="layout-logo-left">
+                        <Icon type="paper-airplane" :size="logoSize" v-show="logoIsDisplay">
+                        </Icon>
+                        <span class="layout-text"> JRKL 管理系统</span>
                     </div>
-                    <div class="layout-nav">
-                        <MenuItem name="1">
-                            <Icon type="ios-navigate"></Icon>
-                            Item 1
-                        </MenuItem>
-                        <MenuItem name="2">
-                            <Icon type="ios-keypad"></Icon>
-                            Item 2
-                        </MenuItem>
-                        <MenuItem name="3">
-                            <Icon type="ios-analytics"></Icon>
-                            Item 3
-                        </MenuItem>
-                        <MenuItem name="4">
-                            <Icon type="ios-paper"></Icon>
-                            Item 4
-                        </MenuItem>
-                    </div>
+                    <!-- 一级菜单 -->
+                    <template v-for="(item,index) in $router.options.routes" v-if="spanLeft >= 5 && !item.hidden">
+                        <Submenu :name="item.name" v-if="!item.leaf">
+                            <!-- 左侧一级菜单名称-->
+                            <template slot="title">
+                                <Icon :type="item.iconCls" :size="iconSize"></Icon>
+                                <span class="layout-text" >{{item.name}}</span>
+                            </template>
+                            <!-- 一级菜单子菜单 -->
+                            <template v-for="(child,childIndex) in item.children" v-if="!child.hidden">
+                                <Menu-item :name="child.path">{{child.name}}</Menu-item>
+                            </template>
+                        </Submenu>
+                        <!-- 单节点菜单 -->
+                        <template  v-if="item.leaf&&item.children.length>0">
+                            <Menu-item :name="item.children[0].path">
+                                 <Icon :type="item.iconCls" :size="iconSize"></Icon>
+                                <span class="layout-text" >{{item.children[0].name}}</span>
+                            </Menu-item>
+                        </template>
+                    </template>
+                    <!-- 折叠左侧菜单 -->
+                    <template v-for="(item,index) in $router.options.routes" v-if="spanLeft < 5 && !item.hidden">
+                        <Dropdown placement="right-start" class="_dropdownList" transfer="true" @on-click="dropDown">
+                            <a href="javascript:void(0)">
+                                <Icon :type="item.iconCls" class="_iconCls ivu-col-span-1" :size="iconSize"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                 <DropdownItem  v-if="!item.name" :name="item.children[0].path">{{item.children[0].name}}</DropdownItem>
+                                  <Dropdown placement="right-start" transfer="true" v-if="item.children && item.name">
+                                      <DropdownItem>
+                                        {{item.name}}
+                                        <Icon type="ios-arrow-right"></Icon>
+                                    </DropdownItem>
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem v-for="(child,childIndex) in item.children" :key="childIndex" :name="child.path">{{child.name}}</DropdownItem>
+                                    </DropdownMenu>
+                                  </Dropdown>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </template>
                 </Menu>
-            </Header>
-            <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
-                        <Submenu name="1">
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                目录1
-                            </template>
-                            <MenuItem name="1-1">子目录1</MenuItem>
-                            <MenuItem name="1-2">子目录2</MenuItem>
-                            <MenuItem name="1-3">子目录3</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                目录2
-                            </template>
-                            <MenuItem name="2-1">子目录1</MenuItem>
-                            <MenuItem name="2-2">子目录2</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                目录3
-                            </template>
-                            <MenuItem name="3-1">子目录1</MenuItem>
-                            <MenuItem name="3-2">子目录2</MenuItem>
-                        </Submenu>
-                    </Menu>
-                </Sider>
-                <Layout :style="{padding: '0px 24px'}">
-                    <Tabs type="card" closable @on-tab-remove="handleTabRemove" >
-                        <TabPane label="标签一" v-if="tab0">
-                            <Content :style="{padding: '24px', minHeight: '500px', background: 'red'}">
-                                Content
-                            </Content>
-                        </TabPane>
-                        <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
-                        <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
-                    </Tabs>
-                </Layout>
-            </Layout>
-        </Layout>
+            </i-col>
+            <!-- 右侧部分 -->
+            <i-col :span="spanRight">
+                <div class="layout-header">
+                    <i-button type="text" @click="toggleClick">
+                        <Icon type="navicon" size="32"></Icon>
+                    </i-button>
+                    <div class="userinfo">
+                        <Dropdown placement="bottom-end">
+                            <span class="head-img">
+                                {{curUserName}}
+                                <img src="@/assets/homelogo.jpg">
+                            </span>
+                            <Dropdown-menu slot="list">
+                                <Dropdown-item @click.native="modifyPassWord()">修改密码</Dropdown-item>
+                                <Dropdown-item @click.native="logout()">修改密码</Dropdown-item>
+                            </Dropdown-menu>
+                        </Dropdown>
+                    </div>
+                </div>
+                <div class="layout-breadcrumb">
+                    <Breadcrumb>
+                        <Breadcrumb-item href="#">应用中心</Breadcrumb-item>
+                        <Breadcrumb-item>{{$route.name}}</Breadcrumb-item>
+                    </Breadcrumb>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-content-main">
+                        <router-view></router-view>
+                     </div>
+                </div>
+            </i-col>
+        </Row>
     </div>
 </template>
+
 <script>
 export default {
     name: 'Home',
     data () {
         return {
-            tab0: true,
-            tab1: true,
-            tab2: true
+            openNames: [this.$route.matched[0].name],
+            curUserName : sessionStorage.getItem('user').replace(/\"/g, ""),
+            modeType: "vertical",
+            spanLeft: 5,
+            spanRight: 19,
+            logoIsDisplay: false,
+            loading: true,
+            modal1: false,
+            formValidate: {
+                oldPassword: '',
+                newPassword: '',
+                resetPassword:''
+            },
+            ruleValidate: {
+                oldPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                resetPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+            }
+        }
+    },
+    computed: {
+        logoSize () {
+            if (this.spanLeft !== 5) {
+                this.logoIsDisplay = true
+                return 50
+            } else {
+                this.logoIsDisplay = false
+                return 0
+            }
+        },
+        iconSize () {
+            return this.spanLeft === 5? 14: 24
         }
     },
     methods: {
-        handleTabRemove (name) {
-            this['tab' + name] = false
+        menuSelect(name) {
+            this.$router.push({ path: name });
+        },
+        toggleClick () {
+            if (this.spanLeft === 5) {
+                this.spanLeft = 1;
+                this.spanRight = 23;
+            } else {
+                this.spanLeft = 5;
+                this.spanRight = 19;
+            }
         }
+    },
+    components: {
     }
 }
 </script>
 
 <style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    height: 100%;
+    .layout{
+        background: #f5f7f9;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+    .layout-breadcrumb{
+        padding: 10px 15px 0;
+    }
+    .layout-content{
+        min-height: 200px;
+        margin: 15px;
+        overflow: auto;
+        background: #fff;
+        border-radius: 4px;
+         height: 80%;
+    }
+    .layout-content-main{
+        padding: 10px;
+    }
+    .layout-copy{
+        text-align: center;
+        padding: 10px 0 20px;
+        color: #9ea7b4;
+    }
+    .layout-menu-left{
+        background: #464c5b;
+    }
+    .layout-header{
+        height: 60px;
+        background: #fff;
+     
+    }
+    .layout-logo-left{
+        width: 90%;
+        height: 60px;
+        line-height: 60px;
+        font-size: 28px;
+        text-align: center;
+      /*  background: #5b6270;
+        border-radius: 3px;
+        margin: 15px auto;*/
+    }
+    .layout-ceiling-main a{
+        color: #9ba7b5;
+    }
+    .layout-hide-text .layout-text{
+        display: none;
+    }
+    .layout-logo-left{
+        color: #fff;
+    }
+    .ivu-col{
+        transition: width .2s ease-in-out;
+    }
+    .ivu-row-flex{
+        height: 100%;
+    }
+.userinfo{
+    display: inline-block;
+    float: right;
+}
+.userinfo .ivu-dropdown{
+    margin-top: 50px;
+}
+ .ivu-dropdown {
+    margin-right: 25px;
+    margin-top: 22px;
+}
+.ivu-menu-submenu-title{
+    padding: 14px;
+}
+
+.head-img {
     width: 100%;
+    height: 60px;
+    line-height: 60px;
+    float: right;
+    margin-top: -50px;
 }
-.layout-logo{
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-}
-.layout-logo>img{
-    width: 100px;
-    height: 30px;
-}
-.layout-nav{
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-.ivu-layout{
-    width: 100%;
-    height: 100%;
-}
-.ivu-layout{
-    margin-top:4px;
+.head-img img{
+    border-radius: 20px;
+    margin: 10px 0px 10px 10px;
+    width: 40px;
+    height: 40px;
+    float: right;
 }
 </style>

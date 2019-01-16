@@ -24,8 +24,8 @@ export default {
     data () {
         return {
             loginData: {
-                acct: '',
-                pass: ''
+                name: '',
+                password: ''
             },
             ruleValidate: {
                 name: [
