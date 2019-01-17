@@ -10,7 +10,7 @@
                         <span class="layout-text"> JRKL 管理系统</span>
                     </div>
                     <!-- 一级菜单 -->
-                    <template v-for="(item,index) in $router.options.routes" v-if="spanLeft >= 5 && !item.hidden">
+                    <template v-for="(item,index) in $router.options.routes1" v-if="spanLeft >= 5 && !item.hidden">
                         <Submenu :name="item.name" v-if="!item.leaf">
                             <!-- 左侧一级菜单名称-->
                             <template slot="title">
@@ -56,12 +56,12 @@
             <i-col :span="spanRight">
                 <div class="layout-header">
                     <i-button type="text" @click="toggleClick">
-                        <Icon type="navicon" size="32"></Icon>
+                        <Icon type="md-exit" size="32"></Icon>
                     </i-button>
                     <div class="userinfo">
                         <Dropdown placement="bottom-end">
                             <span class="head-img">
-                                {{curUserName}}
+                                {{'蔡依林'}}
                                 <img src="@/assets/homelogo.jpg">
                             </span>
                             <Dropdown-menu slot="list">
@@ -93,29 +93,29 @@ export default {
     data () {
         return {
             openNames: [this.$route.matched[0].name],
-            curUserName : sessionStorage.getItem('user').replace(/\"/g, ""),
-            modeType: "vertical",
+            // curUserName : sessionStorage.getItem('user').replace(/\"/g, ""),
+            modeType: 'vertical',
             spanLeft: 5,
             spanRight: 19,
             logoIsDisplay: false,
-            loading: true,
-            modal1: false,
-            formValidate: {
-                oldPassword: '',
-                newPassword: '',
-                resetPassword:''
-            },
-            ruleValidate: {
-                oldPassword: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' }
-                ],
-                newPassword: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' }
-                ],
-                resetPassword: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' }
-                ],
-            }
+            loading: true
+            // modal1: false,
+            // formValidate: {
+            //     oldPassword: '',
+            //     newPassword: '',
+            //     resetPassword:''
+            // },
+            // ruleValidate: {
+            //     oldPassword: [
+            //         { required: true, message: '密码不能为空', trigger: 'blur' }
+            //     ],
+            //     newPassword: [
+            //         { required: true, message: '密码不能为空', trigger: 'blur' }
+            //     ],
+            //     resetPassword: [
+            //         { required: true, message: '密码不能为空', trigger: 'blur' }
+            //     ]
+            // }
         }
     },
     computed: {
@@ -129,21 +129,28 @@ export default {
             }
         },
         iconSize () {
-            return this.spanLeft === 5? 14: 24
+            return this.spanLeft === 5 ? 14 : 24
         }
     },
     methods: {
-        menuSelect(name) {
-            this.$router.push({ path: name });
+        menuSelect (name) {
+            this.$router.push({ path: name })
         },
         toggleClick () {
             if (this.spanLeft === 5) {
-                this.spanLeft = 1;
-                this.spanRight = 23;
+                this.spanLeft = 1
+                this.spanRight = 23
             } else {
-                this.spanLeft = 5;
-                this.spanRight = 19;
+                this.spanLeft = 5
+                this.spanRight = 19
             }
+        },
+        menuSelect(name) {
+            this.$router.push({ path: name });
+        },
+        dropDown(name) {
+            this.$router.push({ path: name });
+            console.log(name);
         }
     },
     components: {
@@ -183,7 +190,7 @@ export default {
     .layout-header{
         height: 60px;
         background: #fff;
-     
+        line-height: 60px;
     }
     .layout-logo-left{
         width: 90%;
@@ -238,5 +245,15 @@ export default {
     width: 40px;
     height: 40px;
     float: right;
+}
+.ivu-select-dropdown .ivu-dropdown {
+     margin: 0px 12px 0px 0px;
+}
+._iconCls{
+    width: 56px;
+    text-align: center;
+}
+.ivu-icon .ivu-icon-navicon {
+    background: red;
 }
 </style>
