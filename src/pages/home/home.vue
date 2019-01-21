@@ -220,7 +220,7 @@ export default {
     float: right;
 }
 .ivu-select-dropdown .ivu-dropdown {
-     margin: 0px 12px 0px 0px;
+    margin: 0px 12px 0px 0px;
 }
 ._iconCls{
     width: 56px;
