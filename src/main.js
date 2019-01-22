@@ -5,9 +5,11 @@ import App from './App'
 import router from './router'
 import iView from 'iview' // 引入iview依赖
 import 'iview/dist/styles/iview.css' // 引入iview css样式
+import Vuex from 'vuex'
 
 Vue.config.productionTip = false
 Vue.use(iView)// 使用iview组件
+Vue.use(Vuex)
 
 /* eslint-disable no-new */
 new Vue({

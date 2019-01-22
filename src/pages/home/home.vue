@@ -64,16 +64,16 @@
                             </DropdownMenu>
                         </Dropdown>
                     </div>
-                    <div class="layout-breadcrumb">
-                        <Breadcrumb>
-                            <BreadcrumbItem href="#">应用中心</BreadcrumbItem>
-                            <BreadcrumbItem>{{$route.name}}</BreadcrumbItem>
-                        </Breadcrumb>
-                    </div>
-                    <div class="layout-content">
-                        <div class="layout-content-main">
-                            <router-view></router-view>
-                        </div>
+                </div>
+                <div class="layout-breadcrumb">
+                    <Breadcrumb>
+                        <BreadcrumbItem href="#">应用中心</BreadcrumbItem>
+                        <BreadcrumbItem>{{$route.name}}</BreadcrumbItem>
+                    </Breadcrumb>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-content-main">
+                        <router-view></router-view>
                     </div>
                 </div>
             </Col>
@@ -151,6 +151,9 @@ export default {
 }
 .layout-content-main{
     padding: 10px;
+}
+.ivu-scroll-container{
+    display: flex;
 }
 .layout-copy{
     text-align: center;
