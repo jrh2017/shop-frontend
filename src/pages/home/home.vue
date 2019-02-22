@@ -19,7 +19,7 @@
                             </template>
                         </Submenu>
                         <template  v-if="item.leaf&&item.children.length>0">
-                            <Menu-item :name="item.children[0].path">
+                            <Menu-item :name="item.children[0].path" :key="fatherindex">
                                  <Icon :type="item.iconCls" :size="iconSize"></Icon>
                                 <span class="layout-text" >{{item.children[0].name}}</span>
                             </Menu-item>
