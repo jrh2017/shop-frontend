@@ -47,8 +47,8 @@
                     </template>
                 </Menu>
             </Col>
-            <Col :span='spanRight'>
-                <div class="layout-header">
+            <Col :span='spanRight' style="height: 100%; overflow-y: scroll;">
+                <div class="layout-header" :class="[showWidth ? 'maxwidth' : 'minwidth']">
                     <Button type="text" @click="toggleClick">
                     <Icon type="md-contacts" size="32"></Icon>
                     </Button>
@@ -91,7 +91,8 @@ export default {
             spanRight: 19,
             logoIsDisplay: false,
             loading: true,
-            transfer: true
+            transfer: true,
+            showWidth: true
         }
     },
     computed: {
@@ -114,9 +115,11 @@ export default {
             if (this.spanLeft === 5) {
                 this.spanLeft = 1
                 this.spanRight = 23
+                this.showWidth = false // 导航切换宽度变化
             } else {
                 this.spanLeft = 5
                 this.spanRight = 19
+                this.showWidth = true
             }
         },
         menuSelect (name) {
@@ -141,6 +144,7 @@ export default {
 }
 .layout-breadcrumb{
     padding: 10px 15px 0;
+    margin-top: 60px;
 }
 .layout-content{
     min-height: 200px;
@@ -167,6 +171,16 @@ export default {
     height: 60px;
     background: #fff;
     line-height: 60px;
+    position: fixed;
+    z-index: 9;
+    right: 0;
+    left:  21%;
+}
+.maxwidth {
+    left: 21%;
+}
+.minwidth {
+    left: 4.2%;
 }
 .layout-logo-left{
     width: 90%;
