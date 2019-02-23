@@ -19,7 +19,7 @@
                             </template>
                         </Submenu>
                         <template  v-if="item.leaf&&item.children.length>0">
-                            <Menu-item :name="item.children[0].path">
+                            <Menu-item :name="item.children[0].path" :key="fatherindex">
                                  <Icon :type="item.iconCls" :size="iconSize"></Icon>
                                 <span class="layout-text" >{{item.children[0].name}}</span>
                             </Menu-item>
@@ -48,7 +48,7 @@
                 </Menu>
             </Col>
             <Col :span='spanRight' style="height: 100%; overflow-y: scroll;">
-                <div class="layout-header" :class="[showWidth ? 'maxwidth' : 'minwidth']">
+                <div class="layout-header">
                     <Button type="text" @click="toggleClick">
                     <Icon type="md-contacts" size="32"></Icon>
                     </Button>
@@ -59,8 +59,8 @@
                                 <img src="@/assets/homelogo.jpg">
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem>修改密码</DropdownItem>
-                                <DropdownItem>退出</DropdownItem>
+                                <DropdownItem @click.native="modifyPassWord()">修改密码</DropdownItem>
+                                <DropdownItem @click.native="layout()">退出</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -78,6 +78,19 @@
                 </div>
             </Col>
         </Row>
+        <Modal v-model="modal1" title="修改密码" @on-ok="comfirmModifyPS"  @on-cancel="cancel">
+            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+                <Form-item label="原密码" prop="oldPassword">
+                    <Input v-model="formValidate.oldPassword" placeholder="请输入原始密码"></Input>
+                </Form-item>
+                <Form-item label="新密码" prop="newPassword">
+                    <Input v-model="formValidate.newPassword" placeholder="请输入新密码"></Input>
+                </Form-item>
+                 <Form-item label="确认新密码" prop="resetPassword">
+                    <Input v-model="formValidate.resetPassword" placeholder="请再次输入新密码"></Input>
+                </Form-item>
+            </Form>
+        </Modal>
     </div>
 </template>
 
@@ -92,7 +105,23 @@ export default {
             logoIsDisplay: false,
             loading: true,
             transfer: true,
-            showWidth: true
+            modal1: false,
+            formValidate: {
+                    oldPassword: '',
+                    newPassword: '',
+                    resetPassword:''
+            },
+            ruleValidate: {
+                oldPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                resetPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+            }
         }
     },
     computed: {
@@ -115,11 +144,9 @@ export default {
             if (this.spanLeft === 5) {
                 this.spanLeft = 1
                 this.spanRight = 23
-                this.showWidth = false // 导航切换宽度变化
             } else {
                 this.spanLeft = 5
                 this.spanRight = 19
-                this.showWidth = true
             }
         },
         menuSelect (name) {
@@ -128,6 +155,20 @@ export default {
         dropDown (name) {
             this.$router.push({ path: name })
             console.log(name)
+        },
+        modifyPassWord () {
+            this.modal1 = true
+        },
+        comfirmModifyPS () {
+            this.modal1 = false
+            this.$Message.info ('点击了确定')
+        },
+        cancel () {
+            this.modal1 = false
+            this.$Message.info ('点击了取消')
+        },
+        layout () {
+            this.$router.push ('/login')
         }
     },
     components: {
@@ -174,13 +215,7 @@ export default {
     position: fixed;
     z-index: 9;
     right: 0;
-    left:  21%;
-}
-.maxwidth {
-    left: 21%;
-}
-.minwidth {
-    left: 4.2%;
+    left: 230px;
 }
 .layout-logo-left{
     width: 90%;
