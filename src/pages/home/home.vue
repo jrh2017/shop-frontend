@@ -47,7 +47,7 @@
                     </template>
                 </Menu>
             </Col>
-            <Col :span='spanRight'>
+            <Col :span='spanRight' style="height: 100%; overflow-y: scroll;">
                 <div class="layout-header">
                     <Button type="text" @click="toggleClick">
                     <Icon type="md-contacts" size="32"></Icon>
@@ -55,29 +55,42 @@
                     <div class="userinfo">
                         <Dropdown placement="bottom-end">
                             <span class="head-img">
-                                {{'火男'}}
+                                {{this.username}}
                                 <img src="@/assets/homelogo.jpg">
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem>修改密码</DropdownItem>
-                                <DropdownItem>退出</DropdownItem>
+                                <DropdownItem @click.native="modifyPassWord()">修改密码</DropdownItem>
+                                <DropdownItem @click.native="layout()">退出</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
-                    <div class="layout-breadcrumb">
-                        <Breadcrumb>
-                            <BreadcrumbItem href="#">应用中心</BreadcrumbItem>
-                            <BreadcrumbItem>{{$route.name}}</BreadcrumbItem>
-                        </Breadcrumb>
-                    </div>
-                    <div class="layout-content">
-                        <div class="layout-content-main">
-                            <router-view></router-view>
-                        </div>
+                </div>
+                <div class="layout-breadcrumb">
+                    <Breadcrumb>
+                        <BreadcrumbItem href="#">应用中心</BreadcrumbItem>
+                        <BreadcrumbItem>{{$route.name}}</BreadcrumbItem>
+                    </Breadcrumb>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-content-main">
+                        <router-view></router-view>
                     </div>
                 </div>
             </Col>
         </Row>
+        <Modal v-model="modal1" title="修改密码" @on-ok="comfirmModifyPS"  @on-cancel="cancel">
+            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+                <Form-item label="原密码" prop="oldPassword">
+                    <Input v-model="formValidate.oldPassword" placeholder="请输入原始密码"></Input>
+                </Form-item>
+                <Form-item label="新密码" prop="newPassword">
+                    <Input v-model="formValidate.newPassword" placeholder="请输入新密码"></Input>
+                </Form-item>
+                 <Form-item label="确认新密码" prop="resetPassword">
+                    <Input v-model="formValidate.resetPassword" placeholder="请再次输入新密码"></Input>
+                </Form-item>
+            </Form>
+        </Modal>
     </div>
 </template>
 
@@ -86,12 +99,30 @@ export default {
     name: 'Home',
     data () {
         return {
+            username: '',
             openNames: [this.$route.matched[0].name],
             spanLeft: 5,
             spanRight: 19,
             logoIsDisplay: false,
             loading: true,
-            transfer: true
+            transfer: true,
+            modal1: false,
+            formValidate: {
+                    oldPassword: '',
+                    newPassword: '',
+                    resetPassword:''
+            },
+            ruleValidate: {
+                oldPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+                resetPassword: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ],
+            }
         }
     },
     computed: {
@@ -109,6 +140,9 @@ export default {
             return this.spanLeft === 5 ? 14 : 24
         }
     },
+    mounted () {
+        this.getUserinfo ()
+    },
     methods: {
         toggleClick () {
             if (this.spanLeft === 5) {
@@ -125,6 +159,25 @@ export default {
         dropDown (name) {
             this.$router.push({ path: name })
             console.log(name)
+        },
+        modifyPassWord () {
+            this.modal1 = true
+        },
+        comfirmModifyPS () {
+            this.modal1 = false
+            this.$Message.info ('点击了确定')
+        },
+        cancel () {
+            this.modal1 = false
+            this.$Message.info ('点击了取消')
+        },
+        layout () {
+            this.$router.push ('/login')
+        },
+        getUserinfo () {
+            console.log(this.$route.params.name)
+            let userinfoname = this.$route.params.name
+            this.username = userinfoname
         }
     },
     components: {
@@ -141,6 +194,7 @@ export default {
 }
 .layout-breadcrumb{
     padding: 10px 15px 0;
+    margin-top: 60px;
 }
 .layout-content{
     min-height: 200px;
@@ -151,6 +205,9 @@ export default {
 }
 .layout-content-main{
     padding: 10px;
+}
+.ivu-scroll-container{
+    display: flex;
 }
 .layout-copy{
     text-align: center;
@@ -164,6 +221,10 @@ export default {
     height: 60px;
     background: #fff;
     line-height: 60px;
+    position: relative;
+    z-index: 9;
+    right: 0px;
+    left: 0px;
 }
 .layout-logo-left{
     width: 90%;

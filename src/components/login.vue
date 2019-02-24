@@ -60,7 +60,15 @@ export default {
             let _this = this
             axios.post('http://47.110.78.180:3016/api/user/login', this.loginData).then(function (response) {
                 if (response.data.code == 1) {
-                    _this.$router.push('/pages/home')
+                    const res = response.data.data
+                    _this.$router.push({
+                        path: '/pages/home',
+                        name: '导航一',
+                        params: {
+                            name: res.user_name,
+                            password: 'ssssss'
+                        }
+                    })
                 } else {
                     _this.$Message.error('账号或密码无效，登录失败！')
                 }
@@ -70,7 +78,8 @@ export default {
             })
         },
         getUserList () {
-            axios.get(`http://47.110.78.180:3016/api/user?name=${this.loginData.name}`).then(res => {
+            let _this = this
+            axios.get(`http://47.110.78.180:3016/api/user?name=${_this.loginData.name}`).then(res => {
                 console.log(res)
             }).catch(function (error) {
                 console.log(error)
