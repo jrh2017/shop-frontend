@@ -27,7 +27,6 @@ export default {
                 name: '',
                 password: ''
             },
-            userInfo: '',
             ruleValidate: {
                 name: [
                     { required: true, message: '账号不能为空', trigger: 'blur' },
