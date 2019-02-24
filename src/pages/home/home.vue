@@ -55,7 +55,7 @@
                     <div class="userinfo">
                         <Dropdown placement="bottom-end">
                             <span class="head-img">
-                                {{'火男'}}
+                                {{this.username}}
                                 <img src="@/assets/homelogo.jpg">
                             </span>
                             <DropdownMenu slot="list">
@@ -99,6 +99,7 @@ export default {
     name: 'Home',
     data () {
         return {
+            username: '',
             openNames: [this.$route.matched[0].name],
             spanLeft: 5,
             spanRight: 19,
@@ -139,6 +140,9 @@ export default {
             return this.spanLeft === 5 ? 14 : 24
         }
     },
+    mounted () {
+        this.getUserinfo ()
+    },
     methods: {
         toggleClick () {
             if (this.spanLeft === 5) {
@@ -169,6 +173,11 @@ export default {
         },
         layout () {
             this.$router.push ('/login')
+        },
+        getUserinfo () {
+            console.log(this.$route.params.name)
+            let userinfoname = this.$route.params.name
+            this.username = userinfoname
         }
     },
     components: {
