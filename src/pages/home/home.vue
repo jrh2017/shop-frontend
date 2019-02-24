@@ -212,10 +212,10 @@ export default {
     height: 60px;
     background: #fff;
     line-height: 60px;
-    position: fixed;
+    position: relative;
     z-index: 9;
-    right: 0;
-    left: 230px;
+    right: 0px;
+    left: 0px;
 }
 .layout-logo-left{
     width: 90%;
