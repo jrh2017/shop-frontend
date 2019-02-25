@@ -55,7 +55,7 @@
                     <div class="userinfo">
                         <Dropdown placement="bottom-end">
                             <span class="head-img">
-                                {{this.username}}
+                                {{'欢迎'+this.username}}
                                 <img src="@/assets/homelogo.jpg">
                             </span>
                             <DropdownMenu slot="list">
