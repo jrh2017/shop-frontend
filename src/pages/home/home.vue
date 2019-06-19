@@ -2,11 +2,11 @@
     <div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
         <Row type='flex'>
         <!-- 左侧布局 -->
-            <Col :span='spanLeft' class='layout-menu-left'>
+            <Col :span='spanLeft' class='layout-menu-left' style="width: 220px;">
                 <Menu mode='vertical' theme="dark" width="auto" :active-name="this.$route.path" :open-names="openNames" @on-select="menuSelect" accordion>
                     <div class="layout-logo-left">
                         <Icon type="ios-jet-outline" v-show="logoIsDisplay"/>
-                        <span class="layout-text">JRKL 管理系统</span>
+                        <span class="layout-text">Beta管理系统</span>
                     </div>
                     <template v-for="(item, fatherindex) in $router.options.routes" v-if="spanLeft >=5 && !item.hidden">
                         <Submenu :name="item.name" v-if="!item.leaf" v-bind:key="fatherindex">
@@ -47,9 +47,9 @@
                     </template>
                 </Menu>
             </Col>
-            <Col :span='spanRight' style="height: 100%; overflow-y: scroll;">
+            <Col :span='spanRight' style="height: 100%; overflow-y: auto;width: calc(100% - 220px);">
                 <div class="layout-header">
-                    <Button type="text" @click="toggleClick">
+                    <Button type="text" v-show="false" @click="toggleClick">
                     <Icon type="md-contacts" size="32"></Icon>
                     </Button>
                     <div class="userinfo">
@@ -194,7 +194,6 @@ export default {
 }
 .layout-breadcrumb{
     padding: 10px 15px 0;
-    margin-top: 60px;
 }
 .layout-content{
     min-height: 200px;
