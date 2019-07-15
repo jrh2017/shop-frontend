@@ -201,6 +201,7 @@ export default {
     overflow: auto;
     background: #fff;
     border-radius: 4px;
+    padding: 20px 0;
 }
 .layout-content-main{
     padding: 10px;
