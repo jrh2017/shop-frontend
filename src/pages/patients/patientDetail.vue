@@ -1,14 +1,24 @@
 <template>
-    <div>测试测试测试</div>
+    <div class="p-detail-main">
+        <div class="p-card">
+            <div class="title">基本信息</div>
+            <Baseinfo :info-data="baseInfo" v-if="baseInfo != null"/>
+        </div>
+    </div>
 </template>
 <script>
 import axios from 'axios'
 import { api } from '../../config'
+import Baseinfo from './components/Baseinfo'
 export default {
     name: "PatientDetail",
+    components: {
+        Baseinfo
+    },
     data () {
         return {
-            msg: 'test'
+            msg: 'test',
+            baseInfo: null
         }
     },
     methods: {
@@ -16,7 +26,7 @@ export default {
             let _this = this
             axios.get(`${api.basehost}/patient/patientDetail/${id}`).then(function (res) {
                 if (res.data.code == 1) {
-                    console.log()
+                    _this.baseInfo = res.data.data
                 } else {
                     _this.$Message.error(res.data)
                 }
@@ -32,5 +42,9 @@ export default {
 }
 </script>
 <style scoped>
-    
+    .p-card .title {
+        line-height: 1.4;
+        padding: 10px;
+        background-color: #eee;
+    }
 </style>
