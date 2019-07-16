@@ -94,57 +94,55 @@
                     <Checkbox v-model="formItem.infection" :true-value="1" :false-value="0">存在感染</Checkbox>
                     <Checkbox v-model="formItem.renal_disease" :true-value="1" :false-value="0">肾功能障碍</Checkbox>
                     <Checkbox v-model="formItem.hepatosis" :true-value="1" :false-value="0">肝功能障碍</Checkbox>
-                    <Checkbox v-model="formItem.radiation" :true-value="1" :false-value="0">放疗史</Checkbox>
+                    <Checkbox v-model="formItem.radiation" :true-value="1" :false-value="0">放疗史</Checkbox><br>
                     <Checkbox v-model="formItem.other" :true-value="1" :false-value="0">其它请注明</Checkbox>
+                    <Input v-model="formItem.other_desc" v-if="formItem.other" placeholder="请输入其它注明..." style="width: 300px"></Input>
                 </div>
                 <div class="area-wapper">
                     <div class="title">个体化用药相关基因检测：</div>
                     <Row>
                         <Col>
                             <Checkbox v-model="formItem.ugt1a1_28" :true-value="1" :false-value="0">UGT1A1*28</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_28_1_1" :true-value="1" :false-value="0">*1*1</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_28_1_28" :true-value="1" :false-value="0">*1*28</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_28_28_28" :true-value="1" :false-value="0">*28*28</Checkbox>
+                            <template v-if="formItem.ugt1a1_28">
+                                <RadioGroup v-model="formItem.ugt1a1_28_type">
+                                    <Radio :label="0">*1*1</Radio>
+                                    <Radio :label="1">*1*28</Radio>
+                                    <Radio :label="2">*28*28</Radio>
+                                </RadioGroup>
+                            </template>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <Checkbox v-model="formItem.ugt1a1_6" :true-value="1" :false-value="0">UGT1A1*6</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_6_1_1" :true-value="1" :false-value="0">*1*1</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_6_1_6" :true-value="1" :false-value="0">*1*6</Checkbox>
-                            <Checkbox v-model="formItem.ugt1a1_6_6_6" :true-value="1" :false-value="0">*6*6</Checkbox>
+                            <template v-if="formItem.ugt1a1_6">
+                                <RadioGroup v-model="formItem.ugt1a1_6_type">
+                                    <Radio :label="0">*1*1</Radio>
+                                    <Radio :label="1">*1*6</Radio>
+                                    <Radio :label="2">*6*6</Radio>
+                                </RadioGroup>
+                            </template>
                         </Col>
                     </Row>
                 </div>
                 <div class="area-wapper">
                     <div class="title">β-葡萄糖醛酸酶活性检测：</div>
                     <Row>
-                        <Col span="2">
-                            <FormItem label="" :label-width="0">
-                                <Checkbox v-model="formItem.glucuronidase_blood" :true-value="1" :false-value="0">血清</Checkbox>
-                            </FormItem>
-                        </Col>
-                        <Col span="10">
-                            <FormItem label="浓度">
-                                <Input v-model="formItem.glucuronidase_blood_concentration"></Input>
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span="2">
-                            <FormItem label="" :label-width="0">
-                                <Checkbox v-model="formItem.glucuronidase_shit" :true-value="1" :false-value="0">粪便</Checkbox>
-                            </FormItem>
-                        </Col>
-                        <Col span="10">
-                            <FormItem label="浓度">
-                                <Input v-model="formItem.glucuronidase_shit_concentration"></Input>
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
                         <Col>
-                            <Checkbox v-model="formItem.glucuronidase_undo" :true-value="1" :false-value="0">未做</Checkbox>
+                            <RadioGroup v-model="formItem.glucuronidase_undo">
+                                <Radio :label="1">未做</Radio>
+                                <Radio :label="0">已做</Radio>
+                            </RadioGroup>
+                        </Col>
+                    </Row>
+                    <Row v-if="!formItem.glucuronidase_undo">
+                        <Col span="12">
+                            <Checkbox v-model="formItem.glucuronidase_blood" :true-value="1" :false-value="0">血清</Checkbox>
+                            <Input v-model="formItem.glucuronidase_blood_concentration" v-if="formItem.glucuronidase_blood" style="width: 300px"></Input>
+                        </Col>
+                        <Col span="12">
+                            <Checkbox v-model="formItem.glucuronidase_shit" :true-value="1" :false-value="0">粪便</Checkbox>
+                            <Input v-model="formItem.glucuronidase_shit_concentration" v-if="formItem.glucuronidase_shit" style="width: 300px"></Input>
                         </Col>
                     </Row>
                 </div>
@@ -193,18 +191,14 @@ export default {
                 other: 0,
                 other_desc: '',
                 ugt1a1_28: 0,
-                ugt1a1_28_1_1: 0,
-                ugt1a1_28_1_28: 0,
-                ugt1a1_28_28_28: 0,
+                ugt1a1_28_type: 0,
                 ugt1a1_6: 0,
-                ugt1a1_6_1_1: 0,
-                ugt1a1_6_1_6: 0,
-                ugt1a1_6_6_6: 0,
+                ugt1a1_6_type: 0,
                 glucuronidase_blood: 0,
                 glucuronidase_blood_concentration: '',
                 glucuronidase_shit: 0,
                 glucuronidase_shit_concentration: '',
-                glucuronidase_undo: 0
+                glucuronidase_undo: 1
             },
             formItem: {},
             columns3: [
@@ -247,13 +241,18 @@ export default {
                     align: 'center'
                 },
                 {
+                    title: '录入时间',
+                    key: 'create_time',
+                    align: 'center'
+                },
+                {
                     title: '操作',
                     key: 'action',
                     align: 'center',
                     render: (h, params) => {
                         return <div class='ope-btns'>
-                            <a on-click={() => this.gotoDetail(params)}>查看详情</a>
-                            <a on-click={() => this.editBaseInfo(this, params)}>编辑基本信息</a>
+                            <a on-click={() => this.gotoDetail(params)}>查看</a>
+                            <a on-click={() => this.editBaseInfo(this, params)}>编辑</a>
                             <a on-click={() => this.deletePatientModal(this, params)}>删除</a>
                         </div>
                     }
@@ -270,6 +269,28 @@ export default {
         },
         addOk () {
             let _this = this
+            if (!this.formItem.other) {
+                this.formItem.other_desc = null
+            }
+            if (!this.formItem.ugt1a1_28) {
+                this.formItem.ugt1a1_28_type = 0
+            }
+            if (!this.formItem.ugt1a1_6) {
+                this.formItem.ugt1a1_6_type = 0
+            }
+            if (this.formItem.glucuronidase_undo) {
+                this.formItem.glucuronidase_blood = 0
+                this.formItem.glucuronidase_blood_concentration = ''
+                this.formItem.glucuronidase_shit = 0
+                this.formItem.glucuronidase_shit_concentration = ''
+            } else {
+                if (!this.formItem.glucuronidase_blood) {
+                    this.formItem.glucuronidase_blood_concentration = ''
+                }
+                if (!this.formItem.glucuronidase_shit) {
+                    this.formItem.glucuronidase_shit_concentration = ''
+                }
+            }
             axios.post(`${api.basehost}/patient/addPatient`, this.formItem).then(function (response) {
                 if (response.data.code == 1) {
                     _this.addFlag = false
@@ -284,6 +305,28 @@ export default {
         },
         editOk () {
             let _this = this
+            if (!this.formItem.other) {
+                this.formItem.other_desc = null
+            }
+            if (!this.formItem.ugt1a1_28) {
+                this.formItem.ugt1a1_28_type = 0
+            }
+            if (!this.formItem.ugt1a1_6) {
+                this.formItem.ugt1a1_6_type = 0
+            }
+            if (this.formItem.glucuronidase_undo) {
+                this.formItem.glucuronidase_blood = 0
+                this.formItem.glucuronidase_blood_concentration = ''
+                this.formItem.glucuronidase_shit = 0
+                this.formItem.glucuronidase_shit_concentration = ''
+            } else {
+                if (!this.formItem.glucuronidase_blood) {
+                    this.formItem.glucuronidase_blood_concentration = ''
+                }
+                if (!this.formItem.glucuronidase_shit) {
+                    this.formItem.glucuronidase_shit_concentration = ''
+                }
+            }
             axios.post(`${api.basehost}/patient/editPatient`, this.formItem).then(function (response) {
                 if (response.data.code == 1) {
                     _this.$Message.success("修改基本信息成功")
