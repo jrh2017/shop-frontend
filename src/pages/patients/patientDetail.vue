@@ -39,7 +39,7 @@
                 <Row>
                     <Col span="24">
                         <FormItem label="日期：">
-                            <DatePicker type="date" placeholder="请选择日期" v-model="pretreatmentFormItem.create_date"></DatePicker>
+                            <DatePicker type="date" format="yyyy-MM-dd" placeholder="请选择日期" v-model="pretreatmentFormItem.create_date"></DatePicker>
                         </FormItem>
                     </Col>
                 </Row>
@@ -148,7 +148,7 @@ export default {
         },
         editPretreatmentModal () {
             this.addPretreatmentType = 'edit'
-            this.pretreatmentFormItem = this.pretreatment
+            this.pretreatmentFormItem = Object.assign({}, this.pretreatment)
             this.addPretreatmentFlag = true
         },
         addPretreatmentOk () {
@@ -165,7 +165,17 @@ export default {
             })
         },
         editPretreatmentOk () {
-            console.log('编辑预处理')
+            let _this = this
+            axios.post(`${api.basehost}/patient/editPretreatment`, this.pretreatmentFormItem).then(function (response) {
+                if (response.data.code == 1) {
+                    _this.addPretreatmentFlag = false
+                    _this.pretreatmentDetail(_this.$route.params.id)
+                } else {
+                    _this.$Message.error(response.data.msg)
+                }
+            }).catch(function (error) {
+                _this.$Message.error('新增预处理失败')
+            })
         }
     },
     mounted() {

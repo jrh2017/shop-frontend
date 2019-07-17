@@ -63,14 +63,14 @@
                 <span class="title">个体化用药相关基因检测：</span>
                 <div style="display: inline-block;" v-if="infoData.ugt1a1_28 || infoData.ugt1a1_6">
                     <span v-if="infoData.ugt1a1_28">
-                        <template v-if="infoData.ugt1a1_28_type == 0">UGT1A1*28*1*1</template>
-                        <template v-else-if="infoData.ugt1a1_28_type == 1">UGT1A1*28*1*28</template>
-                        <template v-else>UGT1A1*28*28*28</template> &nbsp;
+                        <template v-if="infoData.ugt1a1_28_type == 0">UGT1A1*28  *1*1</template>
+                        <template v-else-if="infoData.ugt1a1_28_type == 1">UGT1A1*28  *1*28</template>
+                        <template v-else>UGT1A1*28  *28*28</template> &nbsp;
                     </span>
                     <span v-if="infoData.ugt1a1_6">
-                        <template v-if="infoData.ugt1a1_6_type == 0">UGT1A1*6*1*1</template>
-                        <template v-else-if="infoData.ugt1a1_6_type == 1">UGT1A1*6*1*6</template>
-                        <template v-else>UGT1A1*6*6*6</template>
+                        <template v-if="infoData.ugt1a1_6_type == 0">UGT1A1*6  *1*1</template>
+                        <template v-else-if="infoData.ugt1a1_6_type == 1">UGT1A1*6  *1*6</template>
+                        <template v-else>UGT1A1*6  *6*6</template>
                     </span>
                 </div>
                 <span v-else>无</span>
